@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MessageQue.Model;
+using MessageQue.Utility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,24 +15,36 @@ namespace MessageQue.Controllers
     public class MessageController : Controller
     {
         [HttpGet]
-        /*public Message Get([FromBody] string title, string type)
+        public ActionResult Get([FromBody] Request request)
         {
-            
-        }*/
+            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\" + request.Title + ".txt";
+            if (!System.IO.File.Exists(filepath))
+            {
+                Message message = new Message(request.Title, StorageWriter.ReadFromFile(filepath));
+                string serialized;
+
+                switch (request.Type)
+                {
+                    case "XML":
+                        serialized = Transformer.MessageToXml(message);
+                        break;
+                    case "JSON":
+                        serialized = Transformer.MessageToJSON(message);
+                        break;
+                    default:
+                        return BadRequest();
+                }
+                return Ok(serialized);
+            }
+            return BadRequest();
+        }
 
         [HttpPost]
         public ActionResult Post([FromBody] Message message)
         {
-            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\" + message.Title + ".txt";
-
             if (ModelState.IsValid)
             {
-                using (StreamWriter sw = new StreamWriter(filepath, true))
-                {
-                    sw.WriteLine(message.Title);
-                    sw.WriteLine(message.Type);
-                    sw.WriteLine(message.Body);
-                }
+                StorageWriter.SaveToFile(message);
                 return Ok();
             }
             else { return BadRequest(); }
