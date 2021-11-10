@@ -27,5 +27,20 @@ namespace MessageQue.Utility
                 return sr.ReadToEnd();
             }
         }
+
+        public static void SaveSubs()
+        {
+            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\Subscribers";
+            if (!Directory.Exists(filepath)) { Directory.CreateDirectory(filepath); }
+            using (StreamWriter sw = new StreamWriter(filepath, true))
+            {
+                sw.Write(Transformer.SubsToJSON(SubsPersistance.Instance.Subscription));
+            }
+        }
+
+       /* public static bool SaveTopics()
+        {
+
+        }*/
     }
 }

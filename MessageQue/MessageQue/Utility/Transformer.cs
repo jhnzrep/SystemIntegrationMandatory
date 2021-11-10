@@ -26,5 +26,16 @@ namespace MessageQue
             string jsonstring = JsonSerializer.Serialize<Message>(message);
             return jsonstring;
         }
+
+        public static string SubsToJSON(Subscription sub)
+        {
+            string jsonstring = JsonSerializer.Serialize<Subscription>(sub);
+            return jsonstring;
+        }
+
+        public static Subscription JSONToSubs(string json)
+        {
+            return JsonSerializer.Deserialize<Subscription>(json);
+        }
     }
 }
