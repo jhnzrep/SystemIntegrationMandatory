@@ -14,7 +14,7 @@ namespace MessageQue.Controllers
     [Route("[controller]")]
     public class MessageController : Controller
     {
-        [HttpPost]
+        /*[HttpPost]
         [Route("search")]
         public ActionResult Post([FromBody] Request request)
         {
@@ -42,15 +42,36 @@ namespace MessageQue.Controllers
                 return BadRequest();
             }
             return BadRequest();
+        }*/
+
+        [HttpPost]
+        [Route("next")]
+        public ActionResult Post([FromBody] Request request)
+        {
+            Message message = MessageQueue.Instance.NextMessage(request.Name);
+            string serialized;
+            if (message == null) { return Ok("No more messages in que"); }
+            switch (request.Type)
+            {
+                case "XML":
+                    serialized = Transformer.MessageToXml(message);
+                    break;
+                case "JSON":
+                    serialized = Transformer.MessageToJSON(message);
+                    break;
+                default:
+                    return BadRequest();
+            }
+            return Ok(serialized);
         }
 
         [HttpPost]
         [Route("add")]
-        public ActionResult Post([FromBody] Message message)
+        public ActionResult Post([FromBody] Message message, string topic)
         {
             if (ModelState.IsValid)
             {
-                StorageWriter.SaveToFile(message);
+                StorageWriter.SaveToFile(message, topic);
                 return Ok();
             }
             else { return BadRequest(); }

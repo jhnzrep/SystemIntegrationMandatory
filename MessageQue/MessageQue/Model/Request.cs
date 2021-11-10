@@ -7,7 +7,7 @@ namespace MessageQue.Model
 {
     public class Request
     {
-        public string Title { get; set; }
+        public string Name { get; set; }
         public string Type { get; set; }
 
         public Request()
@@ -15,9 +15,9 @@ namespace MessageQue.Model
 
         }
 
-        public Request(string title, string type)
+        public Request(string name, string type)
         {
-            Title = title;
+            Name = name;
             Type = type;
         }
     }
