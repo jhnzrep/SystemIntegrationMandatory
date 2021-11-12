@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace MessageQue.Utility
         MessageQueue()
         {
             Dic = new Dictionary<string, Queue<Message>>();
-            Queue<Message> que1 = new Queue<Message>();
+            /*Queue<Message> que1 = new Queue<Message>();
             que1.Enqueue(new Message("Test1", "John1"));
             que1.Enqueue(new Message("Test2", "John2"));
             que1.Enqueue(new Message("Test3", "John3"));
@@ -37,7 +38,7 @@ namespace MessageQue.Utility
             que2.Enqueue(new Message("Test8", "Frank8"));
 
             Dic.Add("John", que1);
-            Dic.Add("Frank", que2);
+            Dic.Add("Frank", que2);*/
         }
 
         public static MessageQueue Instance
@@ -64,6 +65,22 @@ namespace MessageQue.Utility
             set { dic = value; }
         }
 
+        public void LoadUserMessages(string name)
+        {
+            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\";
+            foreach (var topic in SubsPersistance.Instance.Subscription.Subs)
+            {
+                if (!topic.Value.Contains(name)) continue;
+                foreach (var file in Directory.EnumerateFiles(filepath + topic))
+                {
+                    Message msg = new Message(Path.GetFileName(file), File.ReadAllText(file));
+                    if(Dic.TryGetValue(name, out Queue<Message> value))
+                    {
+                        value.Enqueue(msg);
+                    };
+                }
+            }
+        }
 
         public Message NextMessage(string name)
         {

@@ -11,10 +11,10 @@ namespace MessageQue.Model
 
         public Subscription()
         {
-
+            Subs = new Dictionary<string, List<string>>();
         }
 
-        public Subscription(string name, Dictionary<string, List<string>> subs)
+        public Subscription(Dictionary<string, List<string>> subs)
         {
             Subs = subs;
         }

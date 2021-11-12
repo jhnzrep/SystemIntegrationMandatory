@@ -14,6 +14,8 @@ namespace MessageQue.Utility
 
         SubsPersistance()
         {
+            var loadedsubs = StorageWriter.LoadSubs();
+            if (loadedsubs != null) { subscription = loadedsubs; }
             subscription = new Subscription();
         }
 
@@ -32,11 +34,20 @@ namespace MessageQue.Utility
             }
         }
 
-        public Subscription Subscription { get => subscription; set => subscription = value; }
+        public Subscription Subscription 
+        { 
+            get { return subscription; }
+            set { subscription = value; } 
+        }
 
-        public void AddTopic(string topic)
+        public bool AddTopic(string topic)
         {
-            Subscription.Subs.Add(topic, new List<string>());
+            if(StorageWriter.AddTopic(topic))
+            {
+                Subscription.Subs.Add(topic, new List<string>());
+                return true;
+            }
+            return false;
         }
 
         public void AddSubscriber(string topic, string name)

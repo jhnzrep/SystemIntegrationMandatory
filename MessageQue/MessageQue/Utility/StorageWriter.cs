@@ -31,11 +31,31 @@ namespace MessageQue.Utility
         public static void SaveSubs()
         {
             var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\Subscribers";
-            if (!Directory.Exists(filepath)) { Directory.CreateDirectory(filepath); }
-            using (StreamWriter sw = new StreamWriter(filepath, true))
+            using (StreamWriter sw = new StreamWriter(filepath))
             {
                 sw.Write(Transformer.SubsToJSON(SubsPersistance.Instance.Subscription));
             }
+        }
+
+        public static Subscription LoadSubs()
+        {
+            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\Subscribers";
+            using (StreamReader sr = new StreamReader(filepath))
+            {
+                if (sr.BaseStream.Length == 0) return null;
+                return Transformer.JSONToSubs(sr.ReadToEnd());
+            }
+        }
+
+        public static bool AddTopic(string topic)
+        {
+            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\" + topic;
+            if (!Directory.Exists(filepath)) 
+            { 
+                Directory.CreateDirectory(filepath);
+                return true;
+            }
+            return false;
         }
 
        /* public static bool SaveTopics()
