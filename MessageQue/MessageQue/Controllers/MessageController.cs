@@ -14,36 +14,6 @@ namespace MessageQue.Controllers
     [Route("[controller]")]
     public class MessageController : Controller
     {
-        /*[HttpPost]
-        [Route("search")]
-        public ActionResult Post([FromBody] Request request)
-        {
-            if (ModelState.IsValid)
-            {
-                var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\" + request.Title + ".txt";
-                if (System.IO.File.Exists(filepath))
-                {
-                    Message message = new Message(request.Title, StorageWriter.ReadFromFile(filepath));
-                    string serialized;
-
-                    switch (request.Type)
-                    {
-                        case "XML":
-                            serialized = Transformer.MessageToXml(message);
-                            break;
-                        case "JSON":
-                            serialized = Transformer.MessageToJSON(message);
-                            break;
-                        default:
-                            return BadRequest();
-                    }
-                    return Ok(serialized);
-                }
-                return BadRequest();
-            }
-            return BadRequest();
-        }*/
-
         [HttpPost]
         [Route("next")]
         public ActionResult Post([FromBody] Request request)
