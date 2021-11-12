@@ -9,12 +9,13 @@ namespace MessageQue.Utility
     public sealed class SubsPersistance
     {
         private Subscription subscription;
+        private string filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\Subscriptions";
         private static SubsPersistance instance = null;
         private static readonly object padlock = new object();
 
         SubsPersistance()
         {
-            var loadedsubs = StorageWriter.LoadSubs();
+            Subscription loadedsubs = StorageWriter.ReadFromFile<Subscription>(filepath);
             if (loadedsubs != null) { subscription = loadedsubs; }
             subscription = new Subscription();
         }
@@ -55,7 +56,7 @@ namespace MessageQue.Utility
             if(Subscription.Subs.TryGetValue(topic, out List<string> list))
             {
                 list.Add(name);
-                StorageWriter.SaveSubs();
+                StorageWriter.SaveToFile<Subscription>(Subscription, filepath);
             }
         }
     }

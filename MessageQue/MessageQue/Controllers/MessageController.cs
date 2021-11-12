@@ -48,31 +48,39 @@ namespace MessageQue.Controllers
         [Route("next")]
         public ActionResult Post([FromBody] Request request)
         {
-            Message message = MessageQueue.Instance.NextMessage(request.Name);
-            string serialized;
-            if (message == null) { return Ok("No more messages in que"); }
-            switch (request.Type)
+            if (ModelState.IsValid) 
             {
-                case "XML":
-                    serialized = Transformer.MessageToXml(message);
-                    break;
-                case "JSON":
-                    serialized = Transformer.MessageToJSON(message);
-                    break;
-                default:
-                    return BadRequest();
+                Message message = MessageQueue.Instance.NextMessage(request.Name);
+                string serialized;
+                if (message == null) { return Ok("No more messages in que"); }
+                switch (request.Type)
+                {
+                    case "XML":
+                        serialized = Transformer.ToXml(message);
+                        break;
+                    case "JSON":
+                        serialized = Transformer.ToJSON(message);
+                        break;
+                    default:
+                        return BadRequest("Invalid request type");
+                }
+                return Ok(serialized);
             }
-            return Ok(serialized);
+            return BadRequest("Invalid request");
         }
 
         [HttpPost]
         [Route("add")]
-        public ActionResult Post([FromBody] Message message, string topic)
+        public ActionResult Post([FromBody] Message message)
         {
             if (ModelState.IsValid)
             {
-                StorageWriter.SaveToFile(message, topic);
-                return Ok();
+                if(StorageWriter.SaveToFile(message))
+                {
+                    MessageQueue.Instance.AddMessage(message);
+                    return Ok();
+                }
+                return BadRequest();
             }
             else { return BadRequest(); }
         }

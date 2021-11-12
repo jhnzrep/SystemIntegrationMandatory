@@ -9,16 +9,18 @@ namespace MessageQue.Model
     {
         public string Title { get; set; }
         public string Body { get; set; }
+        public string Topic { get; set; }
 
         public Message()
         {
 
         }
 
-        public Message(string title, string body)
+        public Message(string title, string body, string topic)
         {
             Body = body;
             Title = title;
+            Topic = topic;
         }
     }
 }

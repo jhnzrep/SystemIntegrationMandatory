@@ -9,41 +9,42 @@ namespace MessageQue.Utility
 {
     public class StorageWriter
     {
-        public static void SaveToFile(Message message, string topic)
+        public static void SaveToFile<T>(T message, string filepath)
         {
-            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\" + topic;
-            if (!Directory.Exists(filepath)) { Directory.CreateDirectory(filepath); }
-            filepath = filepath + @"\" + message.Title;
+            if(!File.Exists(filepath))
+            {
+                using (StreamWriter sw = new StreamWriter(filepath,true))
+                {
+                    sw.Write(Transformer.ToJSON(message));
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = new StreamWriter(filepath))
+                {
+                    sw.Write(Transformer.ToJSON(message));
+                }
+            }
+        }
+
+        public static bool SaveToFile(Message message)
+        {
+            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\" + message.Topic + @"\" + message.Title;
+            if (File.Exists(filepath)) { return false; }
             using (StreamWriter sw = new StreamWriter(filepath, true))
             {
-                sw.WriteLine(message.Body);
+                sw.Write(Transformer.ToJSON(message));
             }
+            return true;
         }
 
-        public static string ReadFromFile(string filepath)
+        public static T ReadFromFile<T>(string filepath)
         {
+            if (!File.Exists(filepath)) return default;
             using (StreamReader sr = new StreamReader(filepath))
             {
-                return sr.ReadToEnd();
-            }
-        }
-
-        public static void SaveSubs()
-        {
-            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\Subscribers";
-            using (StreamWriter sw = new StreamWriter(filepath))
-            {
-                sw.Write(Transformer.SubsToJSON(SubsPersistance.Instance.Subscription));
-            }
-        }
-
-        public static Subscription LoadSubs()
-        {
-            var filepath = @"C:\Users\jcoyn\Documents\KEA\KEA - System Intergration\SystemIntegrationMandatory\MessageStorage\Subscribers";
-            using (StreamReader sr = new StreamReader(filepath))
-            {
-                if (sr.BaseStream.Length == 0) return null;
-                return Transformer.JSONToSubs(sr.ReadToEnd());
+                if (sr.BaseStream.Length == 0) return default;
+                return Transformer.ToObj<T>(sr.ReadToEnd());
             }
         }
 
@@ -57,10 +58,5 @@ namespace MessageQue.Utility
             }
             return false;
         }
-
-       /* public static bool SaveTopics()
-        {
-
-        }*/
     }
 }

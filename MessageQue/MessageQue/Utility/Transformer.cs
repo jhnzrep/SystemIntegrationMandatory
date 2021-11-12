@@ -11,7 +11,7 @@ namespace MessageQue
 {
     public class Transformer
     {
-        public static string MessageToXml(Message message)
+        public static string ToXml<T>(T message)
         {
             using (var stringwriter = new StringWriter())
             {
@@ -21,21 +21,14 @@ namespace MessageQue
             }
         }
 
-        public static string MessageToJSON(Message message)
+        public static string ToJSON<T>(T obj)
         {
-            string jsonstring = JsonSerializer.Serialize<Message>(message);
-            return jsonstring;
+            return JsonSerializer.Serialize<T>(obj);
         }
-
-        public static string SubsToJSON(Subscription sub)
+        
+        public static T ToObj<T>(string json)
         {
-            string jsonstring = JsonSerializer.Serialize<Subscription>(sub);
-            return jsonstring;
-        }
-
-        public static Subscription JSONToSubs(string json)
-        {
-            return JsonSerializer.Deserialize<Subscription>(json);
+            return JsonSerializer.Deserialize<T>(json);
         }
     }
 }
