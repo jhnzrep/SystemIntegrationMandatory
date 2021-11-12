@@ -16,14 +16,14 @@ namespace MessageQue.Controllers
     {
         [HttpPost]
         [Route("subscribe")]
-        public ActionResult Post([FromBody] SubRequest request)
+        public ActionResult Post([FromBody] Request request)
         {
             if(ModelState.IsValid)
             {
-                if (SubsPersistance.Instance.Subscription.Subs.ContainsKey(request.Topic))
+                if (SubsPersistance.Instance.Subscription.Subs.ContainsKey(request.Type))
                 {
-                    if (SubsPersistance.Instance.Subscription.Subs[request.Topic].Contains(request.Name)) return BadRequest("Subscriber already exists to this topic");
-                    SubsPersistance.Instance.AddSubscriber(request.Topic, request.Name);
+                    if (SubsPersistance.Instance.Subscription.Subs[request.Type].Contains(request.Name)) return BadRequest("Subscriber already exists to this topic");
+                    SubsPersistance.Instance.AddSubscriber(request.Type, request.Name);
                     if (MessageQueue.Instance.Dic.ContainsKey(request.Name)) 
                     {
                         MessageQueue.Instance.Dic.Add(request.Name, new Queue<Message>());
@@ -37,11 +37,11 @@ namespace MessageQue.Controllers
 
         [HttpPost]
         [Route("addtopic")]
-        public ActionResult Post([FromBody] Topic topic)
+        public ActionResult Post([FromBody] SubRequest topic)
         {
             if(ModelState.IsValid)
             {
-                if (SubsPersistance.Instance.AddTopic(topic.topic))
+                if (SubsPersistance.Instance.AddTopic(topic.Type))
                 {
                     return Ok("Sucessfully added topic");
                 }

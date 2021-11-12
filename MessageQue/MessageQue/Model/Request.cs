@@ -10,6 +10,11 @@ namespace MessageQue.Model
         public string Name { get; set; }
         public string Type { get; set; }
 
+        public Request(string topic)
+        {
+            Type = topic;
+        }
+
         public Request()
         {
 

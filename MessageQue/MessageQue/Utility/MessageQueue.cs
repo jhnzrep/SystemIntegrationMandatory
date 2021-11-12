@@ -65,6 +65,7 @@ namespace MessageQue.Utility
                         };
                     }
                 }
+                SaveMessageQue();
             }
         }
 
