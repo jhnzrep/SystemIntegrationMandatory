@@ -1,0 +1,60 @@
+html, body{height: 100%}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    position: relative;
+    background-color: aqua;
+}
+.loginContainer{
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginRow{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* only important for multiple lines */
+    padding: 0 20px;
+    height: 200px;
+    background-color: #ffff;
+}
+
+.loginItem{
+    color: white;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: center;
+}
+.loginForm{
+    font-size: 16px;
+    color: #000;
+    text-align: left;
+
+}
+.loginForm input{
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+
+}
+
+.loginForm h1 {
+    margin-bottom: 20px;
+}
+.errorMessage{
+    font-size: 18px;
+    color: red;
+}
+
+.deactive{
+    display: none;
+}
