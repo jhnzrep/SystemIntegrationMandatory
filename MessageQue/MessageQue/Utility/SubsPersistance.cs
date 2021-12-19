@@ -1,6 +1,7 @@
 ﻿using MessageQue.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +17,11 @@ namespace MessageQue.Utility
         SubsPersistance()
         {
             Subscription loadedsubs = StorageWriter.ReadFromFile<Subscription>(filepath);
-            if (loadedsubs != null) { subscription = loadedsubs; }
+            if (loadedsubs != null) 
+            {
+                subscription = loadedsubs;
+                return;
+            }
             subscription = new Subscription();
         }
 
@@ -46,6 +51,7 @@ namespace MessageQue.Utility
             if(StorageWriter.AddTopic(topic))
             {
                 Subscription.Subs.Add(topic, new List<string>());
+                StorageWriter.SaveToFile<Subscription>(Subscription, filepath);
                 return true;
             }
             return false;

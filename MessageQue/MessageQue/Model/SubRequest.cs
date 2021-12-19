@@ -5,7 +5,25 @@ using System.Threading.Tasks;
 
 namespace MessageQue.Model
 {
-    public class SubRequest : Request
+    public class SubRequest
     {
+        public string Name { get; set; }
+        public string Topic { get; set; }
+
+        public SubRequest(string topic)
+        {
+            Topic = topic;
+        }
+
+        public SubRequest()
+        {
+
+        }
+
+        public SubRequest(string name, string topic)
+        {
+            Name = name;
+            Topic = topic;
+        }
     }
 }

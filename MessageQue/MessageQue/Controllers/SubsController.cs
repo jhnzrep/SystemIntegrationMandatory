@@ -24,7 +24,7 @@ namespace MessageQue.Controllers
                 {
                     if (SubsPersistance.Instance.Subscription.Subs[request.Type].Contains(request.Name)) return BadRequest("Subscriber already exists to this topic");
                     SubsPersistance.Instance.AddSubscriber(request.Type, request.Name);
-                    if (MessageQueue.Instance.Dic.ContainsKey(request.Name)) 
+                    if (!MessageQueue.Instance.Dic.ContainsKey(request.Name)) 
                     {
                         MessageQueue.Instance.Dic.Add(request.Name, new Queue<Message>());
                     }
@@ -41,7 +41,7 @@ namespace MessageQue.Controllers
         {
             if(ModelState.IsValid)
             {
-                if (SubsPersistance.Instance.AddTopic(topic.Type))
+                if (SubsPersistance.Instance.AddTopic(topic.Topic))
                 {
                     return Ok("Sucessfully added topic");
                 }

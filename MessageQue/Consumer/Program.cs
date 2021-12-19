@@ -13,24 +13,61 @@ namespace Consumer
             Console.WriteLine("Welcome to the consumer client!");
             Console.WriteLine();
             Console.WriteLine();
-
-            while (true)
+            Console.WriteLine("To start please enter your username:");
+            string name = Console.ReadLine();
+            bool Loop = true;
+            while (Loop)
             {
-                Console.WriteLine("To start please write the exact title of the message");
-                var title = Console.ReadLine();
-
-                Console.WriteLine("Please enter the format you want the message in! JSON or XML");
-                var format = Console.ReadLine();
-
-                request = new Request(title, format);
-
-                var response = await consumer.GetMessage(request);
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine(response);
-                Console.ReadLine();
                 Console.Clear();
+                Console.WriteLine("Please choose what you want to do next:");
+                Console.WriteLine("1 - Read next message");
+                Console.WriteLine("2 - Exit program");
+
+                Console.WriteLine();
+                Console.WriteLine();
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        Console.WriteLine("Choose message format:");
+                        Console.WriteLine("J - JSON");
+                        Console.WriteLine("X - XML");
+                        string format;
+                        switch (Console.ReadLine())
+                        {
+                            case "X":
+                                format = "XML";
+                                break;
+                            default:
+                                format = "JSON";
+                                break;
+                        }
+                        request = new Request(name, format);
+                        var response = await consumer.GetMessage(request);
+
+                        Console.WriteLine();
+                        Console.WriteLine();
+
+                        Console.WriteLine(response);
+
+                        Console.WriteLine();
+                        Console.WriteLine();
+
+                        Console.WriteLine("Would you like to forward this message through SMS?");
+                        Console.WriteLine("Y/N");
+                        switch (Console.ReadLine())
+                        {
+                            case "Y":
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+
+                    default:
+                        Console.WriteLine("Thank you for using our client. Goodbye!");
+                        break;
+                }
             }
         }
     }

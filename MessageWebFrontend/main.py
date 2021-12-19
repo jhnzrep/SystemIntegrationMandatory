@@ -28,7 +28,7 @@ def login():
 def sendSms():
     global generateNewCode
     generateNewCode = generateCode()
-    payload = {'to_phone': 'YOUR_NUMBER', 'message': generateNewCode, 'api_key': 'YOUR_API_KEY'}
+    payload = {'to_phone': '50157383', 'message': generateNewCode, 'api_key': '6e8067b7-80b8-412f-abc2-4cc356dfd8bd'}
     if request.method == 'POST':
         response = requests.post(
             url_sendSMS,

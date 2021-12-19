@@ -12,7 +12,7 @@ namespace Consumer
 {
     class Consumer
     {
-        const string URL = "http://localhost:29924/Message/search";
+        const string URL = "http://localhost:29924/Message/next";
 
         public Consumer()
         {
