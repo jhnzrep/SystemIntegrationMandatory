@@ -24,11 +24,22 @@ def login():
         )
     return response.content
 
+@app.route('/nextmessage', methods=['GET','POST'])
+def nextmessage():
+    name = request.args.get('name', None)
+    type = request.args.get('type', None)
+    payload = {'name': name, 'type': type}
+    if request.method =='POST':
+        response = requests.post(
+            'http://localhost:29924/Message/next',
+            json={"name":name,"type":type})
+    return response.content
+
 @app.route('/send-sms', methods=['POST'])
 def sendSms():
     global generateNewCode
     generateNewCode = generateCode()
-    payload = {'to_phone': '50157383', 'message': generateNewCode, 'api_key': '6e8067b7-80b8-412f-abc2-4cc356dfd8bd'}
+    payload = {'to_phone': '26462999', 'message': generateNewCode, 'api_key': '3642427b-e6b3-4c50-acc9-9eb74335b802'}
     if request.method == 'POST':
         response = requests.post(
             url_sendSMS,

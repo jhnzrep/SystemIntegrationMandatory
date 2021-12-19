@@ -17,6 +17,21 @@ window.addEventListener("message", async (e) => {
     firstForm.classList.remove("deactive");
 })
 
+async function getMessaage()
+{
+    try{
+        let name = document.getElementById('username').value;
+        let type = document.getElementById('type').value;
+        console.log(name + type)
+        await fetch("http://127.0.0.1:5000/nextmessage?name="+name+"&type="+type,{
+            method:"POST"
+        }).then(response=>response.text()).then((body)=>console.log(body))  
+    }
+    catch(ex){
+        console.log(ex)
+    }
+}
+
 async function sendCode() {
     var str;
     const numberInput = document.getElementById("numberInput");
@@ -30,6 +45,7 @@ async function sendCode() {
         })
         const code = await connection.text()
         checkCode(code)
+        changePage()
     }
     catch (ex) {
         console.log(ex)
@@ -54,6 +70,16 @@ function JwtExpiration(JWT) {
     const expiry = (JSON.parse(atob(JWT.split('.')[1]))).exp;
     return (Math.floor((new Date).getTime() / 1000)) >= expiry;
 }
+
+function JwtEmailAccess(JWT){
+    const email = (JSON.parse(atob(JWT.split('.')[1]))).email;
+    return email
+}
+
+function changePage(){
+    window.location.href = "dashboard.html"
+}
+
 
 async function sendSms() {
     try {
